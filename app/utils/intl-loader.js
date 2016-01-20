@@ -5,42 +5,43 @@ const loaders = {
     if (!window.Intl || force) {
       require.ensure([
         'intl',
-        'intl/locale-data/jsonp/en.js',
-        'data/en'
+        'intl/locale-data/jsonp/en.js'
+        // 'data/en'
       ], (require) => {
         require('intl');
         require('intl/locale-data/jsonp/en.js');
-        const lang = require('data/en');
-        return callback(lang);
+        // const lang = require('data/en');
+        // return callback(lang);
       });
     } else {
-      require.ensure(
-        [ 'data/en' ],
-        (require) => callback(require('data/en'))
-      );
-    }
-  },
-
-  fr(callback, force = false) {
-    if (!window.Intl || force) {
-      require.ensure([
-        'intl',
-        'intl/locale-data/jsonp/fr.js',
-        'data/fr'
-      ], (require) => {
-        require('intl');
-        require('intl/locale-data/jsonp/fr.js');
-        const lang = require('data/fr');
-        return callback(lang);
-      });
-    } else {
-      require.ensure(
-        [ 'data/fr' ],
-        (require) => callback(require('data/fr'))
-      );
+    //   require.ensure(
+    //     [ 'data/en' ],
+    //     (require)
+    //     // => callback(require('data/en'))
+    //   );
     }
   }
 
+//   fr(callback, force = false) {
+//     if (!window.Intl || force) {
+//       require.ensure([
+//         'intl',
+//         'intl/locale-data/jsonp/fr.js',
+//         'data/fr'
+//       ], (require) => {
+//         require('intl');
+//         require('intl/locale-data/jsonp/fr.js');
+//         const lang = require('data/fr');
+//         return callback(lang);
+//       });
+//     } else {
+//       require.ensure(
+//         [ 'data/fr' ],
+//         (require) => callback(require('data/fr'))
+//       );
+//     }
+//   }
+//
 };
 
 export default (locale, force) => {

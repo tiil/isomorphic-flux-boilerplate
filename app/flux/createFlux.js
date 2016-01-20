@@ -3,6 +3,8 @@ import makeFinalStore from 'alt-utils/lib/makeFinalStore';
 
 import AltResolver from '../../shared/alt-resolver';
 
+import Axios from 'axios';
+
 import * as stores from './stores/index';
 import * as actions from './actions/index';
 
@@ -21,12 +23,15 @@ class Flux extends Alt {
     //   - access to it in actions with `alt.request`
     this.request = ::client.request;
 
+    this.axios = Axios;
+
     // Load actions into alt
-    Object.keys(actions).forEach(key => this.addActions(key, actions[key]));
+    Object.keys(actions).forEach(key => this.addActions(key, actions[key])); // eslint-disable-line
     // Load stores into alt
-    Object.keys(stores).forEach(key => this.addStore(key, stores[key]));
+    Object.keys(stores).forEach(key => this.addStore(key, stores[key])); // eslint-disable-line
 
     // Our `FinalStore` for using `connect-alt`
+
     this.FinalStore = makeFinalStore(this);
   }
 

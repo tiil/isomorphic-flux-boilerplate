@@ -11,7 +11,7 @@ import responseTime from 'koa-response-time';
 import Router from 'koa-router';
 import convert from 'koa-convert';
 
-import router from './router';
+import router from './router.jsx';
 import config from './config/init';
 
 const app = new Koa();
@@ -59,9 +59,9 @@ if (env === 'development') {
 }
 
 // mount `/api` router
-const apiRouter = new Router({ prefix: '/api' });
-require('./api/routes')(apiRouter);
-app.use(apiRouter.routes());
+// const apiRouter = new Router({ prefix: '/api' });
+// require('./api/routes')(apiRouter);
+// app.use(apiRouter.routes());
 
 // mount react-router
 app.use(router);

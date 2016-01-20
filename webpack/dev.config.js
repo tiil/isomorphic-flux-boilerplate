@@ -50,13 +50,24 @@ export default {
       loaders: [
         ...baseConfig.module.loaders,
         {
-          test: /\.(jpe?g|png|gif|svg|woff|woff2|eot|ttf)(\?v=[0-9].[0-9].[0-9])?$/,
-          loader: 'file?name=[sha512:hash:base64:7].[ext]',
-          exclude: /node_modules\/(?!font-awesome)/
+            test: /\.(jpe?g|png|gif|svg)$/i,
+            loaders: [
+                'file?hash=sha512&digest=hex&name=[hash].[ext]',
+                'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+            ]
+        },
+        {
+            test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)/,
+            loader: 'url-loader'
         },
         {
           test: /\.css$/,
-          loader: 'style!css?sourceMap!postcss',
+          loader: 'style!css?sourceMap',
+          exclude: /node_modules/
+        },
+        {
+          test: /\.less$/,
+          loader: 'style!css?sourceMap!less-loader?sourceMap=true',
           exclude: /node_modules/
         }
       ]

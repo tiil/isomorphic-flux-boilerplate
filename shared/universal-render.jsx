@@ -9,7 +9,7 @@ import Router, { RoutingContext, match } from 'react-router';
 import AltContainer from 'alt-container';
 
 import intlLoader from 'utils/intl-loader';
-import ErrorPage from 'pages/server-error';
+// import ErrorPage from 'pages/server-error';
 
 const { BROWSER, NODE_ENV } = process.env;
 
@@ -33,41 +33,62 @@ export default async function({ flux, history, location }) {
 
     // load the intl-polyfill if needed
     // load the correct data/{lang}.json into app
-    const { locales: [ locale ] } = flux.getStore('locale').getState();
-    const { messages } = await intlLoader(locale);
-    flux.getActions('locale').switchLocale({ locale, messages });
+    // require('../app/utils/intl-polyfill')();
+    // const { locales: [ locale ] } = flux.getStore('locale').getState();
+    // const { messages } = await intlLoader(locale);
+    // require('../app/utils/intl-polyfill')(locale);
+    // flux.getActions('locale').switchLocale({ locale, messages });
 
     const routes = require('routes');
-    const I18nContainer = require('utils/i18n-container');
+
+
+
+    // const I18nContainer = require('utils/i18n-container');
 
     const element = (
       <AltContainer flux={ flux }>
-        <I18nContainer>
           <Router
             history={ history }
             routes={ routes(flux) } />
-        </I18nContainer>
       </AltContainer>
     );
 
-    // Render element in the same container as the SSR
-    render(element, container);
 
-    // Tell `alt-resolver` we have done the first render
-    // next promises will be resolved
-    flux.resolver.firstRender = false;
+    if (!window.Intl) {
+        require.ensure([
+            'intl',
+            'intl/locale-data/jsonp/en.js',
+            'intl/locale-data/jsonp/fi.js'
+        ], (require) => {
+            let intl = require('intl');
+            window.Intl = intl;
+            require('intl/locale-data/jsonp/en.js');
+            require('intl/locale-data/jsonp/fi.js');
+            // Render element in the same container as the SSR
+            render(element, container);
+
+            // Tell `alt-resolver` we have done the first render
+            // next promises will be resolved
+            flux.resolver.firstRender = false;
+
+        });
+    } else {
+        // Render element in the same container as the SSR
+        render(element, container);
+        flux.resolver.firstRender = false;
+    }
+
+
   } else {
     const routes = require('routes')(flux);
-    const I18nContainer = require('utils/i18n-container');
+    // const I18nContainer = require('utils/i18n-container');
     const [ error, redirect, renderProps ] = await runRouter(location, routes);
 
     if (error || redirect) throw ({ error, redirect });
 
     const element = (
       <AltContainer flux={ flux }>
-        <I18nContainer>
           <RoutingContext { ...renderProps } />
-        </I18nContainer>
       </AltContainer>
     );
 
@@ -91,11 +112,11 @@ export default async function({ flux, history, location }) {
       debug('koa')(renderErr);
 
       fluxSnapshot = flux.takeSnapshot();
-      app = renderToString(<ErrorPage />);
+    //   app = renderToString(<ErrorPage />);
     }
 
     // Get status code, page title and page description for rendering
-    const { titleBase, title, ...helmet } = flux.getStore('helmet').getState();
+    const { titleBase, title, ...helmet } = flux.getStore('HelmetStore').getState();
 
     return {
       ...helmet,

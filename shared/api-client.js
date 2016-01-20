@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { port } from '../server/config/init';
+import {port} from '../server/config/init.js';
 
 const { BROWSER } = process.env;
 

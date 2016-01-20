@@ -12,19 +12,24 @@ export default {
     loaders: [
       ...baseConfig.module.loaders,
       {
-        test: /\.(woff|woff2|eot|ttf|svg)(\?v=[0-9].[0-9].[0-9])?$/,
-        loader: 'file?name=[sha512:hash:base64:7].[ext]',
-        exclude: /node_modules\/(?!font-awesome)/
+        test: /\.woff($|\?)|\.woff2($|\?)|\.ttf($|\?)|\.eot($|\?)/,
+        loader: 'url-loader'
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/,
-        loader: 'file?name=[sha512:hash:base64:7].[ext]!image?optimizationLevel=7&progressive&interlaced',
-        exclude: /node_modules\/(?!font-awesome)/
+          test: /\.(jpe?g|png|gif|svg)$/i,
+          loaders: [
+              'file?hash=sha512&digest=hex&name=[hash].[ext]',
+              'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+          ]
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss'),
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap'),
         exclude: /node_modules/
+      },
+      {
+        test: /\.less$/,
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!less-loader?sourceMap=true')
       }
     ]
   },
@@ -75,7 +80,7 @@ export default {
         if_return: true,
         join_vars: true,
         cascade: true,
-        drop_console: true
+        drop_console: false
       },
       output: {
         comments: false

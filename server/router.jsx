@@ -15,28 +15,28 @@ export default async function (ctx) {
   const flux = createFlux(client);
 
   // Get request locale for rendering
-  const locale = ctx.cookies.get('_lang') ||
-    ctx.acceptsLanguages(require('./config/init').locales) ||
-    'en';
+  // const locale = ctx.cookies.get('_lang') ||
+  //   ctx.acceptsLanguages(require('./config/init').locales) ||
+  //   'en';
+  //
+  // const { messages } = require(`data/${locale}`);
+  //
+  // // Get auth-token from cookie
+  // const username = ctx.cookies.get('_auth');
+  //
+  // // Populate store with locale
+  // flux
+  //   .getActions('locale')
+  //   .switchLocale({ locale, messages });
+  //
+  // // Populate store with auth
+  // if (username) {
+  //   flux
+  //     .getActions('session')
+  //     .update({ username });
+  // }
 
-  const { messages } = require(`data/${locale}`);
-
-  // Get auth-token from cookie
-  const username = ctx.cookies.get('_auth');
-
-  // Populate store with locale
-  flux
-    .getActions('locale')
-    .switchLocale({ locale, messages });
-
-  // Populate store with auth
-  if (username) {
-    flux
-      .getActions('session')
-      .update({ username });
-  }
-
-  debug('dev')(`locale of request: ${locale}`);
+  // debug('dev')(`locale of request: ${locale}`);
 
   try {
     const { body, title, statusCode, description } =
@@ -51,8 +51,8 @@ export default async function (ctx) {
     }
 
     debug('dev')('return html content');
-    const props = { body, assets, locale, title, description };
-    ctx.status = statusCode;
+    const props = { body, assets, title, description };
+    ctx.status = statusCode && statusCode;
     ctx.body = '<!DOCTYPE html>' + renderToString(<ServerHTML { ...props } />);
   } catch (err) {
     // Render 500 error page from server

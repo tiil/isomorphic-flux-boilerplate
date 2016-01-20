@@ -1,8 +1,8 @@
 import debug from 'debug';
-import history from 'utils/router-history';
+import history from './utils/router-history';
 
 // Paths are relative to `app` directory
-import createFlux from 'flux/createFlux';
+import createFlux from './flux/createFlux';
 
 import ApiClient from '../shared/api-client';
 import universalRender from '../shared/universal-render';

@@ -32,10 +32,10 @@ export default {
     extensions: [ '', '.js', '.json', '.jsx', '.es6', '.babel' ],
     modulesDirectories: [ 'node_modules', 'app' ]
   },
-  postcss: (webpack) => [
-    require('postcss-import')({ addDependencyTo: webpack }),
-    require('postcss-url')(),
-    require('precss')(),
-    require('autoprefixer')({ browsers: [ 'last 2 versions' ] })
-  ]
+  // postcss: (webpack) => [
+  //   require('postcss-import')({ addDependencyTo: webpack }),
+  //   require('postcss-url')(),
+  //   require('precss')(),
+  //   require('autoprefixer')({ browsers: [ 'last 2 versions' ] })
+  // ]
 };
