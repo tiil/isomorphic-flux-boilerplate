@@ -31,7 +31,7 @@ export default {
   resolve: {
     extensions: [ '', '.js', '.json', '.jsx', '.es6', '.babel' ],
     modulesDirectories: [ 'node_modules', 'app' ]
-  },
+  }
   // postcss: (webpack) => [
   //   require('postcss-import')({ addDependencyTo: webpack }),
   //   require('postcss-url')(),
